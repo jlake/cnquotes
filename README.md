@@ -1,4 +1,6 @@
 cnquotes
 ========
 
-source of 中国名言名句 http://cnquotes.appspot.com/
+source of [中国名言名句](http://cnquotes.appspot.com/)
+
+based on GAE/Python
