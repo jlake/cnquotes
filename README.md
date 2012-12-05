@@ -1,6 +1,9 @@
-cnquotes
+中国名言名句
 ========
 
-source of [中国名言名句](http://cnquotes.appspot.com/)
-
+A web application for Chinese famous quotes  
 based on GAE/Python
+
+Site address:  
+http://cnquotes.appspot.com/
+
