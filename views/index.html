@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset=utf-8>
+<title>中国名言名句 -- By Jlake</title>
+<meta name="keywords" content="中国,名言,名句,Chinese,Quotes" />
+<meta name="description" content="中国名言名句" />
+
+<script type="text/javascript" src="/static/js/html5.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+{% if edit_mode %}
+<script type="text/javascript" src="/static/js/jquery.validate.js"></script>
+<script type="text/javascript" src="/static/js/custom_validators.js"></script>
+{% endif %}
+<script type="text/javascript" src="/static/js/ZeroClipboard.js"></script>
+<script type="text/javascript" src="/static/js/cnquotes.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/static/css/reset.css" media="screen" title="html5doctor.com Reset Stylesheet" />
+<link rel="stylesheet" type="text/css" href="/static/css/general.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/static/css/grid.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/static/css/style.css" media="screen" />
+
+</head>
+<body>
+<div class="row">
+    <header>
+        <div class="logo left"><a href="/"><img src="/static/images/logo.gif" /></a></div>
+        <div class="statement right">感谢访问，欢迎再来。</div>
+        <div class="clear"></div>
+        <nav>
+            <ul class="dynasties">
+                <li {% ifequal dynasty '' %}class="active"{% endifequal %}><a class="dynasty" href="javascript:void(0)" filter="">全朝代</a></li>
+            {% for item in dynasties %}
+                <li {% ifequal item.name dynasty %}class="active"{% endifequal %}><a class="dynasty" href="javascript:void(0)" filter="{{ item.name }}">{{ item.name }}</a></li>
+            {% endfor %}
+                <li>{% if user %}<a href="{{ logout_url }}" >&raquo;登出</a>{% else %}<a href="{{ login_url }}" >&raquo;登入</a>{% endif %}
+            </ul>
+        </nav>
+    </header>
+    <div class="clear"></div>
+    <aside class="width_2 col">
+        <h2>类别</h2>
+        <ul class="categories">
+            <li {% ifequal category '' %}class="active"{% endifequal %}><a class="category" href="javascript:void(0)" filter="">全类别</a></li>
+        {% for item in categories %}
+            <li {% ifequal item.name category %}class="active"{% endifequal %}><a class="category" href="javascript:void(0)" filter="{{ item.name }}">{{ item.name }}({{ item.quotes_cnt }})</a></li>
+        {% endfor %}
+        </ul>
+    </aside>
+    <section class="content width_11 col">
+    {% for item in paginator.items %}
+        <dl id="quotes_content">
+            <dt>
+                <a class="dynasty" href="javascript:void(0)" icon="dynasty" filter="{{ item.dynasty }}">{{ item.dynasty }}</a>
+                ｜<a class="author" href="javascript:void(0)" icon="author" filter="{{ item.author }}">{{ item.author }}</a>
+                ｜<a class="book" href="javascript:void(0)" icon="book" filter="{{ item.book }}">《{{ item.book }}》</a>
+                ｜<a class="category" href="javascript:void(0)" icon="category" filter="{{ item.category }}">{{ item.category }}</a>
+                <span class="right">
+                {% if edit_mode %}
+                    <a class="copy" href="javascript:void(0)" key="{{ item.key }}">复制</a>
+                    ｜<a class="edit" href="javascript:void(0)" key="{{ item.key }}">编辑</a>
+                    ｜<a class="delete" href="javascript:void(0)" key="{{ item.key }}">删除</a>
+                {% endif %}
+                </span>
+            </dt>
+            <dd>
+                <div class="good_mark">
+                    <span>{{ item.vote_cnt }}</span>
+                    <input type="image" class="vote" src="/static/images/good_mark.png" key="{{ item.key }}" />
+                </div>
+                <div id="{{ item.key }}" class="quotes">
+                {{ item.quotes }}
+                </div>
+                <a key="{{ item.key }}" class="button button-blue clip right"><span>复制到剪贴板&raquo;</span></a>
+            </dd>
+        </dl>
+    {% endfor %}
+    {% ifnotequal paginator.pages 1 %}
+        <div class="pagination">
+            {% ifequal paginator.current 1 %}
+                <span class="disabled">前一页</span>
+            {% else %}
+                <a href="{{ page_url }}page={{ paginator.previous }}">前一页</a>
+            {% endifequal %}
+            {% for i in paginator.range %}
+                {% ifequal i paginator.current %}
+                    <span class="actived">{{ i }}</span>
+                {% else %}
+                    <a href="{{ page_url }}page={{ i }}">{{ i }}</a>
+                {% endifequal %}
+            {% endfor %}
+            {% ifequal paginator.current paginator.pages %}
+                <span class="disabled">后一页</span>
+            {% else %}
+                <a href="{{ page_url }}page={{ paginator.next }}">后一页</a>
+            {% endifequal %}
+        </div>
+    {% endifnotequal %}
+        <br />
+    {% if edit_mode %}
+        <form id="editForm" action="/save" method="POST">
+            <input type="hidden" name="key" value=""/>
+            <input type="hidden" name="url" value=""/>
+            <fieldset><legend>编辑/追加</legend>
+                <label for="quotes">名言·名句</label>
+                <textarea name="quotes" class="required"/></textarea>
+                <label for="dynasty">朝代</label>
+                <input type="text" name="dynasty" class="easyinput required" value="" />
+                <label for="category">类别</label>
+                <input type="text" name="category" class="easyinput required" value="" />
+                <label for="author">作者</label>
+                <input type="text" name="author" class="easyinput editable required" value="" />
+                <label for="book">出典</label>
+                <input type="text" name="book" class="easyinput editable required" value="" />
+                <div class="clear"></div>
+                <a id="saveQuotes" href="javascript:void(0)" class="button button-red right"><span>保存 &raquo;</span></a>
+            </fieldset>
+        </form>
+    {% endif %}
+        <form id="searchForm" action="/" method="GET">
+            <input type="hidden" name="category" value="{{ category }}" />
+            <input type="hidden" name="dynasty" value="{{ dynasty }}" />
+            <input type="hidden" name="author" value="{{ author }}" />
+            <input type="hidden" name="book" value="{{ book }}" />
+        </form>
+    </section><!-- end content -->
+    <aside class="width_3 col">
+        <h2>作者</h2>
+        <ul class="authors">
+            <li {% ifequal author '' %}class="active"{% endifequal %}><a class="author" href="javascript:void(0)" filter="">全作者</a></li>
+        {% for item in authors %}
+            <li {% ifequal item.name author %}class="active"{% endifequal %}><a class="author" href="javascript:void(0)" filter="{{ item.name }}">{{ item.name }}({{ item.quotes_cnt }})</a></li>
+        {% endfor %}
+             <li {% ifnotequal search_author '' %}class="active"{% endifnotequal %}><input id="author_name" value="{{ search_author }}" size="12" maxlength="20" /><span class="search author" /></li>
+        </ul>
+        <h2>出典</h2>
+        <ul class="books">
+            <li {% ifequal book '' %}class="active"{% endifequal %}><a class="book" href="javascript:void(0)" filter="">全出典</a></li>
+        {% for item in books %}
+            <li {% ifequal item.name book %}class="active"{% endifequal %}><a class="book" href="javascript:void(0)" filter="{{ item.name }}">{{ item.name }}({{ item.quotes_cnt }})</a></li>
+        {% endfor %}
+            <li {% ifnotequal search_book '' %}class="active"{% endifnotequal %}><input id="book_name" value="{{ search_book }}" size="12" maxlength="30" /><span class="search book" /></li>
+        </ul>
+    </aside>
+</div><!-- end wrap -->
+<footer class="row">
+    <section class="align_center">
+        <em>Copyright(c) 2010 Jlake Ou all rights reserved.</em>
+    </section>
+    <section class="align_center">
+        <!-- Tweet Button
+        <a href="http://twitter.com/share" class="twitter-share-button" data-text="TEST" data-count="horizontal" data-via="jlake">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+        -->
+        Powered by: <a href="http://appengine.google.com/">GAE</a>
+    </section>
+</footer>
+</body>
+</html>

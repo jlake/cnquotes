@@ -1,0 +1,99 @@
+indexes:
+
+- kind: Quotes
+  properties:
+  - name: dynasty
+  - name: category
+  - name: author
+  - name: book
+  - name: created
+    direction: desc
+
+- kind: Quotes
+  properties:
+  - name: dynasty
+  - name: author
+  - name: book
+  - name: created
+    direction: desc
+
+- kind: Quotes
+  properties:
+  - name: dynasty
+  - name: category
+  - name: book
+  - name: created
+    direction: desc
+
+- kind: Quotes
+  properties:
+  - name: dynasty
+  - name: category
+  - name: author
+  - name: created
+    direction: desc
+
+- kind: Quotes
+  properties:
+  - name: dynasty
+  - name: category
+    direction: desc
+
+- kind: Quotes
+  properties:
+  - name: dynasty
+  - name: author
+  - name: created
+    direction: desc
+
+- kind: Quotes
+  properties:
+  - name: dynasty
+  - name: book
+  - name: created
+    direction: desc
+
+- kind: Quotes
+  properties:
+  - name: category
+  - name: author
+  - name: created
+    direction: desc
+
+- kind: Quotes
+  properties:
+  - name: category
+  - name: book
+  - name: created
+    direction: desc
+
+- kind: Quotes
+  properties:
+  - name: author
+  - name: book
+  - name: created
+    direction: desc
+
+- kind: Quotes
+  properties:
+  - name: dynasty
+  - name: created
+    direction: desc
+
+- kind: Quotes
+  properties:
+  - name: category
+  - name: created
+    direction: desc
+
+- kind: Quotes
+  properties:
+  - name: author
+  - name: created
+    direction: desc
+
+- kind: Quotes
+  properties:
+  - name: book
+  - name: created
+    direction: desc
