@@ -48,6 +48,27 @@
         </ul>
     </aside>
     <section class="content width_11 col">
+    {% if edit_mode %}
+        <form id="editForm" action="/save" method="POST">
+            <input type="hidden" name="key" value=""/>
+            <input type="hidden" name="url" value=""/>
+            <fieldset><legend>编辑/追加</legend>
+                <label for="quotes">名言·名句</label>
+                <textarea name="quotes" class="required"/></textarea>
+                <label for="dynasty">朝代</label>
+                <input type="text" name="dynasty" class="easyinput required" value="" />
+                <label for="category">类别</label>
+                <input type="text" name="category" class="easyinput required" value="" />
+                <label for="author">作者</label>
+                <input type="text" name="author" class="easyinput editable required" value="" />
+                <label for="book">出典</label>
+                <input type="text" name="book" class="easyinput editable required" value="" />
+                <div class="clear"></div>
+                <a id="saveQuotes" href="javascript:void(0)" class="button button-red"><span>保存 &raquo;</span></a>
+            </fieldset>
+        </form>
+        <br />
+    {% endif %}
     {% for item in paginator.items %}
         <dl id="quotes_content">
             <dt>
@@ -96,27 +117,6 @@
             {% endifequal %}
         </div>
     {% endifnotequal %}
-        <br />
-    {% if edit_mode %}
-        <form id="editForm" action="/save" method="POST">
-            <input type="hidden" name="key" value=""/>
-            <input type="hidden" name="url" value=""/>
-            <fieldset><legend>编辑/追加</legend>
-                <label for="quotes">名言·名句</label>
-                <textarea name="quotes" class="required"/></textarea>
-                <label for="dynasty">朝代</label>
-                <input type="text" name="dynasty" class="easyinput required" value="" />
-                <label for="category">类别</label>
-                <input type="text" name="category" class="easyinput required" value="" />
-                <label for="author">作者</label>
-                <input type="text" name="author" class="easyinput editable required" value="" />
-                <label for="book">出典</label>
-                <input type="text" name="book" class="easyinput editable required" value="" />
-                <div class="clear"></div>
-                <a id="saveQuotes" href="javascript:void(0)" class="button button-red right"><span>保存 &raquo;</span></a>
-            </fieldset>
-        </form>
-    {% endif %}
         <form id="searchForm" action="/" method="GET">
             <input type="hidden" name="category" value="{{ category }}" />
             <input type="hidden" name="dynasty" value="{{ dynasty }}" />
